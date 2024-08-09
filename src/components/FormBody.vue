@@ -46,7 +46,7 @@ form.value.Fields = [
     Name: 'Types',
     Label: 'Types',
     Type: AdminFieldType.Select,
-    Value: '',
+    Value: '2',
     Placeholder: '',
     Required: false,
     Options: [
@@ -54,6 +54,14 @@ form.value.Fields = [
       new SelectOption('2', 'Type 2'),
       new SelectOption('3', 'Type 3')
     ]
+  }),
+  new AdminField({
+    Name: 'EffectiveDate',
+    Label: 'Effective Date',
+    Type: AdminFieldType.Date,
+    Value: '2020-05-02',
+    Placeholder: 'Effective Date',
+    Required: false
   })
 ]
 </script>
@@ -66,8 +74,9 @@ form.value.Fields = [
     <div v-for="field in form.Fields" :key="field.Name">
       <label>{{ field.Label }}</label>
       <input
-        v-if="field.Type === AdminFieldType.Text"
+        v-if="field.Type === AdminFieldType.Date"
         v-model="field.Value"
+        type="date"
         :placeholder="field.Placeholder"
       />
       <input
@@ -81,6 +90,7 @@ form.value.Fields = [
           {{ option.Label }}
         </option>
       </select>
+      <input v-else type="text" v-model="field.Value" :placeholder="field.Placeholder" />
     </div>
     <div>
       <button class="submit-button">{{ form.SubmitLabel }}</button>

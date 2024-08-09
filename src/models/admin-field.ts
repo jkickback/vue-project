@@ -1,5 +1,5 @@
 import type { AdminFieldType } from '@/enums/admin-field-type'
-import type { SelectOption } from '@/models/select-option'
+import type SelectOption from '@/models/select-option'
 
 export default class AdminField {
   Name: string | undefined

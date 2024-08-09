@@ -1,77 +1,20 @@
 <script setup lang="ts">
-import AdminForm from '@/models/admin-form'
-import AdminField from '@/models/admin-field'
 import { AdminFieldType } from '@/enums/admin-field-type'
-import SelectOption from '@/models/select-option'
+import TaxService from '@/services/domain/tax-service'
 
 import { ref } from 'vue'
-
 const form = ref(
-  new AdminForm({
-    Name: 'Edit Something',
-    Description: 'This is a form to edit some specific thing that we should explain here.',
-    SubmitLabel: 'Save',
-    CancelLabel: 'Cancel',
-    Fields: [],
-    Columns: 3
-  })
+  TaxService.AdminForm
 )
 
-form.value.Fields = [
-  new AdminField({
-    Name: 'Name',
-    Label: 'Name',
-    Type: AdminFieldType.Text,
-    Value: 'John Doe',
-    Placeholder: '',
-    Required: false
-  }),
-  new AdminField({
-    Name: 'Email',
-    Label: 'Email',
-    Type: AdminFieldType.Text,
-    Value: '',
-    Placeholder: '',
-    Required: true
-  }),
-  new AdminField({
-    Name: 'Age',
-    Label: 'Age',
-    Type: AdminFieldType.Number,
-    Value: 21,
-    Placeholder: '',
-    Required: false
-  }),
-  new AdminField({
-    Name: 'Types',
-    Label: 'Types',
-    Type: AdminFieldType.Select,
-    Value: '2',
-    Placeholder: '',
-    Required: false,
-    Options: [
-      new SelectOption('1', 'Type 1'),
-      new SelectOption('2', 'Type 2'),
-      new SelectOption('3', 'Type 3')
-    ]
-  }),
-  new AdminField({
-    Name: 'EffectiveDate',
-    Label: 'Effective Date',
-    Type: AdminFieldType.Date,
-    Value: '2020-05-02',
-    Placeholder: 'Effective Date',
-    Required: false
-  })
-]
 </script>
 
 <template>
   <main>
-    <h1>{{ form.Name }}</h1>
-    <h3>{{ form.Description }}</h3>
+    <h1>{{ form?.Name ?? '' }}</h1>
+    <h3>{{ form?.Description }}</h3>
     <!-- <pre>{{ form.Fields }}</pre> -->
-    <div v-for="field in form.Fields" :key="field.Name">
+    <div v-for="field in form?.Fields" :key="field.Name">
       <label>{{ field.Label }}</label>
       <input
         v-if="field.Type === AdminFieldType.Date"
@@ -93,8 +36,8 @@ form.value.Fields = [
       <input v-else type="text" v-model="field.Value" :placeholder="field.Placeholder" />
     </div>
     <div>
-      <button class="submit-button">{{ form.SubmitLabel }}</button>
-      <button class="cancel-button">{{ form.CancelLabel }}</button>
+      <button class="submit-button">{{ form?.SubmitLabel ?? 'Save' }}</button>
+      <button class="cancel-button">{{ form?.CancelLabel ?? 'Cancel' }}</button>
     </div>
   </main>
 </template>
@@ -113,7 +56,7 @@ button {
   color: white;
 }
 .cancel-button {
-  background-color: red;
+  background-color: rgb(92, 92, 92);
   color: white;
 }
 </style>

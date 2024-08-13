@@ -10,53 +10,59 @@ const form = ref(
 </script>
 
 <template>
-  <main>
     <h1>{{ form?.Name ?? '' }}</h1>
     <h3>{{ form?.Description }}</h3>
     <!-- <pre>{{ form.Fields }}</pre> -->
-    <div v-for="field in form?.Fields" :key="field.Name">
-      <label>{{ field.Label }}</label>
-      <input
-        v-if="field.Type === AdminFieldType.Date"
-        v-model="field.Value"
-        type="date"
-        :placeholder="field.Placeholder"
-      />
-      <input
-        v-else-if="field.Type === AdminFieldType.Number"
-        type="number"
-        v-model="field.Value"
-        :placeholder="field.Placeholder"
-      />
-      <select v-else-if="field.Type === AdminFieldType.Select" v-model="field.Value">
-        <option v-for="option in field.Options" :key="option.Value" :value="option.Value">
-          {{ option.Label }}
-        </option>
-      </select>
-      <input v-else type="text" v-model="field.Value" :placeholder="field.Placeholder" />
+    <div class="row" v-for="field in form?.Fields" :key="field.Name">
+         <label :for="field.Name">{{ field.Label }}</label>
+        <ToggleSwitch
+          v-if="field.Type === AdminFieldType.Checkbox"
+          :id="field.Name"
+          v-model="field.Value"
+          :placeholder="field.Placeholder"
+        />
+        <DatePicker
+          v-else-if="field.Type === AdminFieldType.Date"
+          :id="field.Name"
+          v-model="field.Value"
+          :placeholder="field.Placeholder"
+        />
+        <InputNumber
+          v-else-if="field.Type === AdminFieldType.Number"
+          v-model="field.Value"
+          :placeholder="field.Placeholder"
+          inputId="withoutgrouping" :useGrouping="false" fluid
+          :id="field.Name"
+        />
+        <Select v-else-if="field.Type === AdminFieldType.Select"
+          v-model="field.Value"
+          :options="field.Options"
+          optionLabel="Label"
+          optionValue="Value"
+          :id="field.Name" />
+
+        <InputText v-else v-model="field.Value" :placeholder="field.Placeholder"
+          :id="field.Name" />
     </div>
     <div>
-      <button class="submit-button">{{ form?.SubmitLabel ?? 'Save' }}</button>
-      <button class="cancel-button">{{ form?.CancelLabel ?? 'Cancel' }}</button>
+      <Button :label="form?.SubmitLabel ?? 'Save'" severity="primary" />
+      <Button :label="form?.CancelLabel ?? 'Cancel'" severity="secondary" />
     </div>
-  </main>
 </template>
 
 <style scoped>
 button {
   padding: 10px;
   margin: 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
   font-size: large;
 }
-.submit-button {
-  background-color: green;
-  color: white;
+label {
+  font-weight: bolder;
+  margin-bottom: 6px;;
 }
-.cancel-button {
-  background-color: rgb(92, 92, 92);
-  color: white;
+.row {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
 }
 </style>
